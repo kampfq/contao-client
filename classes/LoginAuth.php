@@ -102,16 +102,33 @@ class LoginAuth extends \System
 
     protected function loginUser($userData)
     {
-        if(!is_array($userData) || !isset($userData['user'])) return false;
+        if(!is_array($userData) || !isset($userData['username'])) return false;
 
-        $user = \UserModel::findByUsername($userData['user']);
+        $user = \UserModel::findByUsername($userData['username']);
 
+        // Create new user
         if(!$user) {
             $user = new \UserModel();
+            $user->tstamp = time();
+            $user->uploader = 'FileUpload';
+            $user->backendTheme = 'default';
+            $user->dateAdded = time();
+
+            $user->showHelp = true;
+            $user->thumbnails = true;
+            $user->useRTE = true;
+            $user->useCE = true;
+
             $user->username = $userData['username'];
         }
 
-        // TODO: Update general user data
+        // Update general user data
+        $user->name = $userData['name'];
+        $user->email = $userData['email'];
+        $user->language = (isset($userData['language'])) ? $userData['language'] : null;
+        $user->admin = (isset($userData['admin']) && $userData['admin'] == "1") ? true : false;
+
+        // Save user
         $user->save();
 
         // Perform frontend login
