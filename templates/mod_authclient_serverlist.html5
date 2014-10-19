@@ -1,0 +1,17 @@
+<!-- javascript -->
+<script src="system/modules/auth_client/assets/be_login.js"></script>
+
+<!-- table -->
+<tr>
+    <td><label for="server">
+            Login-Server
+    </label></td>
+    <td style="text-align:right">
+        <select name="auth_server" id="auth_server" class="tl_select">
+            <option value="">localhost</option>
+            <?php foreach($this->loginServers as $k => $server): ?>
+                <option value="<?php echo $server->id; ?>"><?php echo $server->name; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </td>
+</tr>
