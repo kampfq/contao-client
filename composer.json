@@ -1,0 +1,26 @@
+{
+    "name":"comolo/contao-authclient",
+    "description":"Adds support for remote login servers.",
+    "keywords":["contao","login"],
+    "type":"contao-module",
+    "homepage":"http://www.comolo.de",
+    "license":"LGPL-3.0+",
+    "authors":[{
+        "name": "Hendrik Obermayer, Comolo GmbH",
+        "homepage": "http://www.comolo.de",
+        "role": "Developer"
+    }],
+    "require": {
+        "comolo/php-clc": "dev-master"
+    },
+    "autoload":{
+        "classmap":[""]
+    },
+    "extra":{
+        "contao":{
+            "sources":{
+                "":"system/modules/auth-client"
+            }
+        }
+    }
+}
