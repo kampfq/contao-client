@@ -20,28 +20,30 @@ window.onload = function () {
     function onChangeServer() {
         serverId = server.options[server.selectedIndex].value;
 
-        var toggleElements, submitButton, submitButtonInitialValue;
+        var toggleElements;
+        // var submitButton;
+        //var submitButtonInitialValue;
         toggleElements = document.querySelectorAll(
             ".tl_login_form tbody tr:nth-child(2)," +
             ".tl_login_form tbody tr:nth-child(3)," +
             ".tl_login_form tbody tr:nth-child(4)"
         );
-        submitButton = document.getElementById("login");
-        submitButtonInitialValue = submitButton.value;
+        //submitButton = document.getElementById("login");
+        //submitButtonInitialValue = submitButton.value;
 
         if(serverId == "0" || serverId == "") {
             // display
             for (var i = 0; i < toggleElements.length; i++) {
                 toggleElements[i].style.display = "table-row";
             }
-            submitButton.value = submitButtonInitialValue;
+            //submitButton.value = submitButtonInitialValue;
         }
         else {
             // hide
             for (var i = 0; i < toggleElements.length; i++) {
                 toggleElements[i].style.display = "none";
             }
-            submitButton.value = 'Weiter';
+            //submitButton.value = 'Weiter';
         }
     }
 }
