@@ -118,6 +118,8 @@ class LoginAuth extends \System
         self::$allowLogin = true;
         $_POST['username'] = $user->username;
         $_POST['password'] = '#######';
+        $_POST['REQUEST_TOKEN'] = REQUEST_TOKEN;
+
         $this->loginUserAction();
     }
 
