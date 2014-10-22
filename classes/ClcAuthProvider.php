@@ -57,7 +57,7 @@ class ClcAuthProvider extends AuthProvider
     {
         $requestHash = \Input::get('rqh');
         $responseHash = \Input::get('rsh');
-        $responseData = (\Input::get('rdata') != '') ? \Input::get('rdata') : \Input::post('rdata');
+        $responseData = (\Input::get('rdata')) ? \Input::get('rdata') : urldecode(\Input::post('rdata'));
 
         $generationTime = (isset($_SESSION['clc_gen_timestamp'])) ? $_SESSION['clc_gen_timestamp'] : false;
 
