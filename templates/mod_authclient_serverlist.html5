@@ -7,10 +7,10 @@
             Login-Server
     </label></td>
     <td style="text-align:right">
-        <select name="auth_server" id="auth_server" class="tl_select">
-            <option value="">localhost</option>
+        <select name="auth_server" id="auth_server" class="tl_select auth_server">
+            <option value="">Contao (local)</option>
             <?php foreach($this->loginServers as $k => $server): ?>
-                <option value="<?php echo $server->id; ?>"><?php echo $server->name; ?></option>
+                <option value="<?php echo $server->id; ?>" class="<?php echo ($this->preferredServer==$server->id) ? 'preferred' : ''; ?>"><?php echo $server->name; ?></option>
             <?php endforeach; ?>
         </select>
     </td>

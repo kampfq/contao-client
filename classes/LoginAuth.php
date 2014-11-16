@@ -28,6 +28,15 @@ namespace AuthClient;
 class LoginAuth extends \System
 {
     protected static $allowLogin = false;
+    protected $serverId = null;
+
+    protected function setPreferredLoginProvider()
+    {
+        if($this->serverId) {
+            unset($_COOKIE['cto_preferred_login_provider']);
+            $this->setCookie('cto_preferred_login_provider', $this->serverId, time()+60*60*24*30);
+        }
+    }
 
 	public function addServersToLoginPage($strContent, $strTemplate)
     {
@@ -35,6 +44,15 @@ class LoginAuth extends \System
         {
             $template = new \BackendTemplate('mod_authclient_serverlist');
             $template->loginServers = \AuthClientServerModel::findAll();
+
+            // Preferred login provider
+            $preferredServer = intval(\Input::cookie('cto_preferred_login_provider'));
+            if($preferredServer > 0) {
+                $template->preferredServer = $preferredServer;
+            }
+            else {
+                $template->preferredServer = false;
+            }
 
             $searchString = '<table class="tl_login_table">';
             $strContent = str_replace($searchString, $searchString . $template->parse(), $strContent);
@@ -48,7 +66,7 @@ class LoginAuth extends \System
         // run only in be mode
         if(TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
 
-        $serverId = intval(\Input::post('auth_server'));
+        $this->serverId = $serverId = intval(\Input::post('auth_server'));
 
         if($serverId > 0) {
 
@@ -75,7 +93,7 @@ class LoginAuth extends \System
         // run only in be mode
         if(TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
 
-        $serverId = intval(\Input::get('authid'));
+        $this->serverId = $serverId = intval(\Input::get('authid'));
 
         if($serverId > 0) {
 
@@ -137,6 +155,7 @@ class LoginAuth extends \System
         $_POST['password'] = '#######';
         $_POST['REQUEST_TOKEN'] = REQUEST_TOKEN;
 
+        $this->setPreferredLoginProvider();
         $this->loginUserAction();
     }
 
