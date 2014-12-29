@@ -65,6 +65,10 @@ class LoginAuth extends \System
     {
         // run only in be mode
         if (TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
+        
+        // Initialize BackendUser before Database
+        \BackendUser::getInstance();
+        \Database::getInstance();  
 
         $this->serverId = $serverId = intval(\Input::post('auth_server'));
 
@@ -92,6 +96,10 @@ class LoginAuth extends \System
     {
         // run only in be mode
         if (TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
+        
+        // Initialize BackendUser before Database
+        \BackendUser::getInstance();
+        \Database::getInstance();  
 
         $this->serverId = $serverId = intval(\Input::get('authid'));
 
