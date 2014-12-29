@@ -32,13 +32,13 @@ class LoginAuth extends \System
 
     protected function setPreferredLoginProvider()
     {
-        if($this->serverId) {
+        if ($this->serverId) {
             unset($_COOKIE['cto_preferred_login_provider']);
             $this->setCookie('cto_preferred_login_provider', $this->serverId, time()+60*60*24*30);
         }
     }
 
-	public function addServersToLoginPage($strContent, $strTemplate)
+    public function addServersToLoginPage($strContent, $strTemplate)
     {
         if ($strTemplate == 'be_login')
         {
@@ -47,7 +47,7 @@ class LoginAuth extends \System
 
             // Preferred login provider
             $preferredServer = intval(\Input::cookie('cto_preferred_login_provider'));
-            if($preferredServer > 0) {
+            if ($preferredServer > 0) {
                 $template->preferredServer = $preferredServer;
             }
             else {
@@ -64,11 +64,11 @@ class LoginAuth extends \System
     public function listenForAuthRequest()
     {
         // run only in be mode
-        if(TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
+        if (TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
 
         $this->serverId = $serverId = intval(\Input::post('auth_server'));
 
-        if($serverId > 0) {
+        if ($serverId > 0) {
 
             $server = \AuthClientServerModel::findById($serverId);
             if(!$server) return false;
@@ -91,11 +91,11 @@ class LoginAuth extends \System
     public function listenForAuthResponse()
     {
         // run only in be mode
-        if(TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
+        if (TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
 
         $this->serverId = $serverId = intval(\Input::get('authid'));
 
-        if($serverId > 0) {
+        if ($serverId > 0) {
 
             $server = \AuthClientServerModel::findById($serverId);
             if(!$server) return false;
@@ -120,12 +120,12 @@ class LoginAuth extends \System
 
     protected function loginUser($userData)
     {
-        if(!is_array($userData) || !isset($userData['username'])) return false;
+        if (!is_array($userData) || !isset($userData['username'])) return false;
 
         $user = \UserModel::findByUsername($userData['username']);
 
         // Create new user
-        if(!$user) {
+        if (!$user) {
             $user = new \UserModel();
             $user->tstamp = time();
             $user->uploader = 'FileUpload';
@@ -180,7 +180,7 @@ class LoginAuth extends \System
 
     public function loginUserHookPassword($strUsername, $strPassword, $objUser)
     {
-        if(self::$allowLogin) {
+        if (self::$allowLogin) {
             return true;
         }
 
