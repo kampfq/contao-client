@@ -24,7 +24,6 @@ $GLOBALS['BE_MOD']['system']['auth_client'] = array(
 );
 
 $GLOBALS['TL_HOOKS']['checkCredentials'][] = array('LoginAuth', 'loginUserHookPassword');
-
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthResponse');
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthRequest');
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('LoginAuth', 'addServersToLoginPage');
