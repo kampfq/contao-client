@@ -61,4 +61,12 @@ abstract class AuthProvider extends \System
         return $this->Environment->url . $this->Environment->requestUri . '?authid=' . $this->auth_server_id;
     }
 
+    public function onSubmitDcForm($dc) {
+        return;
+    }
+
+    public function getAuthServerInfo($value, $dc) {
+        return $value;
+    }
+
 }

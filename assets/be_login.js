@@ -13,7 +13,7 @@ window.onload = function () {
         var element = document.querySelector('#auth_server option.preferred');
         document.querySelector('.styled_select.tl_select.auth_server span').textContent = element.textContent;
         element.selected = true;
-
+        
         onChangeServer();
     }
 

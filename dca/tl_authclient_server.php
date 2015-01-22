@@ -11,7 +11,6 @@
  * @copyright 2014 Hendrik Obermayer
  */
 
-
 /**
  * Table tl_authclient_server
  */
@@ -22,14 +21,18 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 	'config' => array
 	(
 		'dataContainer'               => 'Table',
-		'enableVersioning'            => true,
+		'enableVersioning'            => false,
 		'sql' => array
 		(
 			'keys' => array
 			(
 				'id' => 'primary'
 			)
-		)
+		),
+
+        'onsubmit_callback' => array(
+            array('tl_authclient_server', 'onSubmit')
+        )
 	),
 
 	// List
@@ -102,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array(''),
-		'default'                     => '{title_legend},name;{server_legend},server_address,auth_provider;{server_access_legend},public_id,private_key;'
+		'default'                     => '{server_legend},authinfo,auth_provider;{server_access_legend},server_key;'
 	),
 
 	// Subpalettes
@@ -130,6 +133,20 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
+        
+        'server_key' => array(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
+			'exclude'                 => true,
+			'inputType'               => 'fileUpload',
+			'eval'                    => array
+			(
+				'mandatory' 		  => true,
+				'extensions' 	 	  => 'ccrt',
+				'storeFile' 		  => true,
+				'uploadFolder' 	 	  => 'system/tmp'
+			),
+            'sql'                     => "blob NOT NULL"
+        ),
 
         'public_id' => array
         (
@@ -167,5 +184,27 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp' => 'classname'),
             'sql'                     => "text NOT NULL"
         ),
+
+		'validTo' => array
+		(
+			'eval'                    => array('maxlength'=>100),
+			'sql'                     => "varchar(100) NOT NULL default ''"
+		),
+
+		'authinfo' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_house']['testfield'],
+			'inputType'               => 'infobox',
+			'default'				  => 'Hallo!!!',
+			'load_callback'			  => array
+			(
+				array('tl_authclient_server', 'getAuthServerInfo'),
+			),
+			'save_callback' 		  => array
+			(
+				array('tl_authclient_server', 'doNotSave'),
+			),
+			'eval'                    => array('doNotSaveEmpty' => true, 'readonly' => true),
+		),
 	)
 );

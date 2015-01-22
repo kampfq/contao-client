@@ -27,8 +27,14 @@ ClassLoader::addClasses(array
 (
 	// Classes
 	'AuthClient\ClcAuthProvider' => 'system/modules/auth_client/classes/ClcAuthProvider.php',
+	'AuthClient\ClcPlusAuthProvider' => 'system/modules/auth_client/classes/ClcPlusAuthProvider.php',
 	'AuthClient\LoginAuth'       => 'system/modules/auth_client/classes/LoginAuth.php',
 	'AuthClient\AuthProvider'    => 'system/modules/auth_client/classes/AuthProvider.php',
+	'AuthClient\tl_authclient_server'    => 'system/modules/auth_client/classes/tl_authclient_server.php',
+
+	// widget
+	'AuthClient\InfoboxField'    => 'system/modules/auth_client/widget/InfoboxField.php',
+
 
 	// Models
 	'AuthClient\AuthClientServerModel' => 'system/modules/auth_client/models/AuthClientServerModel.php',
