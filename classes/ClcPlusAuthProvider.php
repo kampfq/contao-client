@@ -107,11 +107,14 @@ class ClcPlusAuthProvider extends AuthProvider
         {
             $keyPath = $dc->activeRecord->server_key;
 
-            if (substr($keyPath, 0, 1) != '{') {
-                return false;
-            }
-
             if (!is_array($dc->activeRecord->server_key)) {
+
+                // check if serialized
+                if (substr(trim($keyPath), 0, 1) != 'a') {
+                    return;
+                }
+
+                // unserialize
                 $keyPath = unserialize($keyPath);
             }
 
