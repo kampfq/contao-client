@@ -31,8 +31,13 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 		),
 
         'onsubmit_callback' => array(
-            array('tl_authclient_server', 'onSubmit')
-        )
+            array('tl_authclient_server', 'onSubmitDca')
+        ),
+		'onload_callback'		  => array
+		(
+			array('tl_authclient_server', 'onCertificateUpload')
+		),
+
 	),
 
 	// List
@@ -105,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array(''),
-		'default'                     => '{server_legend},authinfo,auth_provider;{server_access_legend},server_key;'
+		'default'                     => '{server_auth_legend},auth_provider,public_id;{certificate_legend},authinfo,server_key;'
 	),
 
 	// Subpalettes
@@ -135,40 +140,31 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 		),
         
         'server_key' => array(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['server_key'],
 			'exclude'                 => true,
 			'inputType'               => 'fileUpload',
 			'eval'                    => array
 			(
 				'mandatory' 		  => true,
-				'extensions' 	 	  => 'ccrt',
+				'extensions' 	 	  => $GLOBALS['TL_CONFIG']['authClientCertificateFiletype'],
 				'storeFile' 		  => true,
-				'uploadFolder' 	 	  => 'system/tmp'
+				'uploadFolder' 	 	  => 'system/tmp',
 			),
-            'sql'                     => "blob NOT NULL"
+            'sql'                     => "blob NOT NULL",
         ),
 
         'public_id' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['public_id'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-
-        'private_key' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
-            'exclude'                 => true,
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50 wizard'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
 
         'server_address' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['server_address'],
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
@@ -177,11 +173,11 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 
         'auth_provider' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['name'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['auth_provider'],
             //'exclude'                 => true,
             'inputType'               => 'select',
             'options'                 => $GLOBALS['AUTH_CLIENT']['providers'],
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp' => 'classname'),
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp' => 'classname', 'tl_class'=>'w50 wizard'),
             'sql'                     => "text NOT NULL"
         ),
 
@@ -191,11 +187,11 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 			'sql'                     => "varchar(100) NOT NULL default ''"
 		),
 
+		// TODO: Rename to certinfo
 		'authinfo' => array
 		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_house']['testfield'],
+			'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['authinfo'],
 			'inputType'               => 'infobox',
-			'default'				  => 'Hallo!!!',
 			'load_callback'			  => array
 			(
 				array('tl_authclient_server', 'getAuthServerInfo'),
@@ -204,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 			(
 				array('tl_authclient_server', 'doNotSave'),
 			),
-			'eval'                    => array('doNotSaveEmpty' => true, 'readonly' => true),
+			'eval'                    => array('doNotSaveEmpty' => true, 'readonly' => true, 'blankOptionLabel' => '-'),
 		),
 	)
 );

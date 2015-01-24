@@ -31,6 +31,7 @@ abstract class AuthProvider extends \System
     protected $public_id;
     protected $private_key;
     protected $auth_server_id;
+    protected $server_key;
 
 
     public function __construct() {
@@ -51,6 +52,13 @@ abstract class AuthProvider extends \System
 
     public function setPrivateKey($private_key) {
         $this->private_key = $private_key;
+    }
+
+    public function setServerKey($server_key) {
+        $this->server_key = $server_key;
+    }
+    public function getServerKey() {
+        return $this->server_key;
     }
 
     public function run() {

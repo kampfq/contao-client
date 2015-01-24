@@ -30,6 +30,9 @@ class LoginAuth extends \System
     protected static $allowLogin = false;
     protected $serverId = null;
 
+    /**
+     * remember the last used login provider
+     */
     protected function setPreferredLoginProvider()
     {
         if($this->serverId) {
@@ -38,12 +41,21 @@ class LoginAuth extends \System
         }
     }
 
+    /**
+     * Display option field in backend login
+     *
+     * @param $strContent
+     * @param $strTemplate
+     * @return mixed
+     */
 	public function addServersToLoginPage($strContent, $strTemplate)
     {
         if ($strTemplate == 'be_login')
         {
             $template = new \BackendTemplate('mod_authclient_serverlist');
             $template->loginServers = \AuthClientServerModel::findAll();
+
+            // TODO: Check if certificate is still valid
 
             // Preferred login provider
             $preferredServer = intval(\Input::cookie('cto_preferred_login_provider'));
@@ -61,6 +73,10 @@ class LoginAuth extends \System
         return $strContent;
     }
 
+    /**
+     * check for a new request to redirect to the auth server
+     * @return bool|void
+     */
     public function listenForAuthRequest()
     {
         // run only in be mode
@@ -80,6 +96,7 @@ class LoginAuth extends \System
             $authProvider->setServerAddress($server->server_address);
             $authProvider->setPublicId($server->public_id);
             $authProvider->setPrivateKey($server->private_key);
+            $authProvider->setServerKey($server->server_key);
             $authProvider->run();
 
             return true;
@@ -88,8 +105,13 @@ class LoginAuth extends \System
         return false;
     }
 
+    /**
+     * check for incoming request from the clc server
+     * @return bool|void
+     */
     public function listenForAuthResponse()
     {
+
         // run only in be mode
         if(TL_SCRIPT != 'contao/index.php' || TL_MODE != 'BE') return;
 
@@ -107,10 +129,21 @@ class LoginAuth extends \System
             $authProvider->setServerAddress($server->server_address);
             $authProvider->setPublicId($server->public_id);
             $authProvider->setPrivateKey($server->private_key);
+            $authProvider->setServerKey($server->server_key);
+
+            // Fix: temporarily disable request token
+            $tokenStatus = $GLOBALS['TL_CONFIG']['disableRefererCheck'];
+            $GLOBALS['TL_CONFIG']['disableRefererCheck'] = false;
 
             // TODO: check for exception / display error
             $response = $authProvider->checkResponse();
-            $this->loginUser($response);
+
+            // reset request token status
+            $GLOBALS['TL_CONFIG']['disableRefererCheck'] = $tokenStatus;
+
+            if($response) {
+                $this->loginUser($response);
+            }
 
             return true;
         }
@@ -118,6 +151,12 @@ class LoginAuth extends \System
         return false;
     }
 
+    /**
+     * try to log the user in
+     *
+     * @param $userData
+     * @return bool
+     */
     protected function loginUser($userData)
     {
         if(!is_array($userData) || !isset($userData['username'])) return false;
@@ -159,6 +198,9 @@ class LoginAuth extends \System
         $this->loginUserAction();
     }
 
+    /**
+     * helper method - user login
+     */
     protected function loginUserAction()
     {
         $this->import('BackendUser', 'User');
@@ -178,6 +220,14 @@ class LoginAuth extends \System
         }
     }
 
+    /**
+     * helper method - user login
+     *
+     * @param $strUsername
+     * @param $strPassword
+     * @param $objUser
+     * @return bool
+     */
     public function loginUserHookPassword($strUsername, $strPassword, $objUser)
     {
         if(self::$allowLogin) {

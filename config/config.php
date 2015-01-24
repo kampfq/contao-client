@@ -16,7 +16,6 @@ $GLOBALS['AUTH_CLIENT'] = array();
 $GLOBALS['AUTH_CLIENT']['providers'] = array();
 
 // Add CLC Provider
-$GLOBALS['AUTH_CLIENT']['providers'][] = 'ClcAuthProvider';
 $GLOBALS['AUTH_CLIENT']['providers'][] = 'ClcPlusAuthProvider';
 
 $GLOBALS['TL_HOOKS']['checkCredentials'][] = array('LoginAuth', 'loginUserHookPassword');
@@ -30,3 +29,13 @@ $GLOBALS['BE_MOD']['system']['auth_client'] = array(
 );
 
 $GLOBALS['BE_FFL']['infobox'] = 'InfoboxField';
+
+$GLOBALS['TL_CONFIG']['authClientCertificateFiletype'] = 'superlogin';
+
+// Allow upload of certificate files
+if (!in_array(
+    $GLOBALS['TL_CONFIG']['authClientCertificateFiletype'],
+    explode(',', $GLOBALS['TL_CONFIG']['uploadTypes']))
+) {
+    $GLOBALS['TL_CONFIG']['uploadTypes'] .= ',' . $GLOBALS['TL_CONFIG']['authClientCertificateFiletype'];
+}

@@ -26,7 +26,6 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Classes
-	'AuthClient\ClcAuthProvider' => 'system/modules/auth_client/classes/ClcAuthProvider.php',
 	'AuthClient\ClcPlusAuthProvider' => 'system/modules/auth_client/classes/ClcPlusAuthProvider.php',
 	'AuthClient\LoginAuth'       => 'system/modules/auth_client/classes/LoginAuth.php',
 	'AuthClient\AuthProvider'    => 'system/modules/auth_client/classes/AuthProvider.php',

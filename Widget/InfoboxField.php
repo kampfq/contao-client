@@ -1,14 +1,18 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: hendrik
- * Date: 22.01.15
- * Time: 23:51
+ * @package   AuthClient
+ * @author    Hendrik Obermayer - Comolo GmbH
+ * @license   -
+ * @copyright 2015 Hendrik Obermayer
  */
 
 namespace AuthClient;
 
-
+/**
+ * Class InfoboxField
+ * @package AuthClient
+ */
 class InfoboxField extends \Widget {
 
     /**

@@ -29,14 +29,22 @@ use Comolo\Extra\ClcClient;
  */
 class ClcPlusAuthProvider extends AuthProvider
 {
-    protected $client;
-
+    /**
+     * initialize CLC Client
+     * @return ClcClient
+     */
     protected function getClcClient()
     {
-        $this->client = new ClcClient($this->server_address, $this->public_id, $this->private_key);
-        return $this->client;
+        // Get public key from certificate
+        $resPubKey = openssl_pkey_get_public($this->getServerKey());
+        $pubKeyArr = openssl_pkey_get_details($resPubKey);
+
+        return new ClcClient($this->server_address, $this->public_id, $pubKeyArr['key']);
     }
 
+    /**
+     * redirect to CLC Server
+     */
     public function runRequest()
     {
         $client = $this->getClcClient();
@@ -53,11 +61,18 @@ class ClcPlusAuthProvider extends AuthProvider
         exit;
     }
 
+    /**
+     * check the response of the clc server
+     * trigger login if response in valid
+     *
+     * @return bool|mixed
+     * @throws \Exception
+     */
     public function checkResponse()
     {
-        $requestHash = \Input::get('rqh');
-        $responseHash = \Input::get('rsh');
-        $responseData = (\Input::get('rdata')) ? \Input::get('rdata') : urldecode(\Input::post('rdata'));
+        $requestHash = urldecode(\Input::post('rqh'));
+        $responseHash = urldecode(\Input::post('rsh'));
+        $responseData = urldecode(\Input::post('rdata'));
 
         $generationTime = (isset($_SESSION['clc_gen_timestamp'])) ? $_SESSION['clc_gen_timestamp'] : false;
 
@@ -78,11 +93,23 @@ class ClcPlusAuthProvider extends AuthProvider
         }
     }
 
+    /**
+     * called when the backend form was saved
+     * check certificate and write it to the database
+     *
+     * @param $dc
+     * @return bool
+     * @throws \Exception
+     */
     public function onSubmitDcForm($dc)
     {
         if ($dc->activeRecord->server_key != '')
         {
             $keyPath = $dc->activeRecord->server_key;
+
+            if (substr($keyPath, 0, 1) != '{') {
+                return false;
+            }
 
             if (!is_array($dc->activeRecord->server_key)) {
                 $keyPath = unserialize($keyPath);
@@ -112,6 +139,14 @@ class ClcPlusAuthProvider extends AuthProvider
                 $authServer->name = $certName;
                 $authServer->validTo = $arrCert['validTo_time_t'];
 
+                // URI
+                if(str_replace('URI:', '', $arrCert['subject']['CN']) !== $arrCert['subject']['CN']) {
+                    $authServer->server_address = str_replace('URI:', '', $arrCert['subject']['CN']);
+                }
+                else {
+                    throw new \Exception('No URI in Certificate CN given.');
+                }
+
             }
             else {
                 throw new \Exception('Error reading cert file!');
@@ -125,6 +160,13 @@ class ClcPlusAuthProvider extends AuthProvider
         }
     }
 
+    /**
+     * Display information about the certificate
+     *
+     * @param $value
+     * @param $dc
+     * @return string
+     */
     public function getAuthServerInfo($value, $dc) {
         $authServer = \AuthClientServerModel::findById($dc->activeRecord->id);
         $arrInfo = array();
