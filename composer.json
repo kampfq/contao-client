@@ -11,7 +11,7 @@
         "role": "Developer"
     }],
     "require": {
-        "comolo/php-clc": "dev-master"
+        "comolo/php-clc": "~2.0"
     },
     "autoload":{
         "classmap":[""]
