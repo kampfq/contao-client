@@ -17,6 +17,8 @@ $GLOBALS['AUTH_CLIENT']['providers'] = array();
 
 // Add CLC Provider
 $GLOBALS['AUTH_CLIENT']['providers'][] = 'ClcPlusAuthProvider';
+$GLOBALS['AUTH_CLIENT']['version'] = '2';
+$GLOBALS['AUTH_CLIENT']['type'] = '5';
 
 $GLOBALS['TL_HOOKS']['checkCredentials'][] = array('LoginAuth', 'loginUserHookPassword');
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthResponse');

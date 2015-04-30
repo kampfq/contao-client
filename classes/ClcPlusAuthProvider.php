@@ -39,7 +39,10 @@ class ClcPlusAuthProvider extends AuthProvider
         $resPubKey = openssl_pkey_get_public($this->getServerKey());
         $pubKeyArr = openssl_pkey_get_details($resPubKey);
 
-        return new ClcClient($this->server_address, $this->public_id, $pubKeyArr['key']);
+        $client = new ClcClient($this->server_address, $this->public_id, $pubKeyArr['key']);
+        $client->setVersion($GLOBALS['AUTH_CLIENT']['version']);
+
+        return $client;
     }
 
     /**
@@ -216,8 +219,8 @@ class ClcPlusAuthProvider extends AuthProvider
         // data to post
         $postData = array(
             'name' => $websiteTitle,
-            'type' => '5', // contao
-            'version' => '1',
+            'type' => $GLOBALS['AUTH_CLIENT']['type'], // contao
+            'version' => $GLOBALS['AUTH_CLIENT']['version'],
             'certificateHash' => $certificateHash,
             'domain' => $domain
         );
