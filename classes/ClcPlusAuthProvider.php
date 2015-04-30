@@ -210,6 +210,10 @@ class ClcPlusAuthProvider extends AuthProvider
      */
     protected function requestPublicId($serverUrl, $certificateHash, $domain, $websiteTitle) {
 
+        // add register to server url
+        $serverUrl .= '/register';
+
+        // data to post
         $postData = array(
             'name' => $websiteTitle,
             'type' => '5', // contao
