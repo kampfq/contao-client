@@ -155,6 +155,17 @@ class ClcPlusAuthProvider extends AuthProvider
                 throw new \Exception('Error reading cert file!');
             }
 
+
+            // Request Public id
+            $authServer->public_id = $this->requestPublicId(
+                $authServer->server_address,
+                $arrCert['extensions']['subjectKeyIdentifier'],
+                $_SERVER['SERVER_NAME'],
+                isset($GLOBALS['TL_CONFIG']['websiteTitle'])
+                    ? $GLOBALS['TL_CONFIG']['websiteTitle']
+                    : $_SERVER['SERVER_NAME']
+            );
+
             // Save auth server model
             $authServer->save();
         }
@@ -184,5 +195,49 @@ class ClcPlusAuthProvider extends AuthProvider
         }
 
         return implode("\n", $arrInfo);
+    }
+
+    /**
+     * request a public id for this client
+     *
+     * @param $serverUrl string url of the superlogin server
+     * @param $certificateHash hash hash of the server certificate
+     * @param $domain domain domain of this website
+     * @param $websiteTitle title title of this website
+     *
+     * @return string public id
+     * @throws \Exception could not get public id from server
+     */
+    protected function requestPublicId($serverUrl, $certificateHash, $domain, $websiteTitle) {
+
+        $postData = array(
+            'name' => $websiteTitle,
+            'type' => '5', // contao
+            'version' => '1',
+            'certificateHash' => $certificateHash,
+            'domain' => $domain
+        );
+
+        // send post data curl-less
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($postData),
+            ),
+        );
+
+        $context  = stream_context_create($options);
+        $result = file_get_contents($serverUrl, false, $context);
+
+        // Check result
+        if(substr($result, 0, 4) == "*ID:"
+            && substr($result, -1, 1) == "*"
+            && strlen($result) < 40)
+        {
+            return substr($result, 4, -1);
+        }
+
+        throw new \Exception("Could not get public id! Error: " . htmlentities($result));
     }
 }

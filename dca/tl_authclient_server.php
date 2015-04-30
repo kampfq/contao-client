@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array(''),
-		'default'                     => '{server_auth_legend},auth_provider,public_id;{certificate_legend},authinfo,server_key;'
+		'default'                     => '{server_auth_legend},auth_provider;{certificate_legend},authinfo,server_key;'
 	),
 
 	// Subpalettes
@@ -155,10 +155,8 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 
         'public_id' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_authclient_server']['public_id'],
-            'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50 wizard'),
+            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50 wizard'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
 
