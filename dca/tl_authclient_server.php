@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_authclient_server'] = array
 	'palettes' => array
 	(
 		'__selector__'                => array(''),
-		'default'                     => '{server_auth_legend},auth_provider;{certificate_legend},authinfo,server_key;'
+		'default'                     => '{server_auth_legend:hide},auth_provider;{certificate_legend},authinfo,server_key;'
 	),
 
 	// Subpalettes
