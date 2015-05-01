@@ -1,5 +1,5 @@
 {
-    "name":"comolo/contao-authclient",
+    "name":"superlogin/contao-client",
     "description":"Adds support for remote login servers.",
     "keywords":["contao","login"],
     "type":"contao-module",
@@ -7,7 +7,7 @@
     "license":"LGPL-3.0+",
     "authors":[{
         "name": "Hendrik Obermayer, Comolo GmbH",
-        "homepage": "http://www.comolo.de",
+        "homepage": "http://www.superlogin.net",
         "role": "Developer"
     }],
     "require": {
@@ -15,6 +15,9 @@
     },
     "autoload":{
         "classmap":[""]
+    },
+    "replace":{
+    	"comolo/contao-authclient":"*"
     },
     "extra":{
         "contao":{
