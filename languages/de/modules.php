@@ -15,10 +15,5 @@
 /**
  * Back end modules
  */
-$GLOBALS['TL_LANG']['MOD']['auth_client'] = array('Login-Server', 'Login-Server verwalten');
-
-
-/**
- * Front end modules
- */
-$GLOBALS['TL_LANG']['FMD'][''] = array('', '');
+$GLOBALS['TL_LANG']['MOD']['superlogin'] = 'SuperLogin';
+$GLOBALS['TL_LANG']['MOD']['superlogin_auth_servers'] = array('Login-Server', 'Login-Server verwalten');

@@ -25,7 +25,7 @@ $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthRe
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthRequest');
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('LoginAuth', 'addServersToLoginPage');
 
-$GLOBALS['BE_MOD']['system']['auth_client'] = array(
+$GLOBALS['BE_MOD']['superlogin']['superlogin_auth_servers'] = array(
     'tables'       => array('tl_authclient_server'),
     'icon'         => 'system/modules/auth_client/assets/computer_key.png',
 );
