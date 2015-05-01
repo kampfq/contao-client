@@ -1,6 +1,6 @@
 {
     "name":"superlogin/contao-client",
-    "description":"Adds support for remote login servers.",
+    "description":"SuperLogin Client for Contao 3",
     "keywords":["contao","login"],
     "type":"contao-module",
     "homepage":"http://www.comolo.de",
