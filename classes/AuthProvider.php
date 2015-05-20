@@ -66,7 +66,11 @@ abstract class AuthProvider extends \System
     }
 
     public function getReturnUrl() {
-        return $this->Environment->url . $this->Environment->requestUri . '?authid=' . $this->auth_server_id;
+
+        $uri = $this->Environment->url . $this->Environment->requestUri;
+        $delimiter = (\Input::get('referer')) ? '&' : '?';
+
+        return $uri . $delimiter . 'authid=' . $this->auth_server_id;
     }
 
     public function onSubmitDcForm($dc) {

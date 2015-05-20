@@ -17,7 +17,7 @@
  */
 namespace AuthClient;
 
-use Comolo\Extra\ClcClient;
+use Comolo\Clc\ClcClient;
 
 
 /**
