@@ -51,11 +51,7 @@ class OAuth2Provider extends IdentityProvider
 
     public function userDetails($response, \League\OAuth2\Client\Token\AccessToken $token)
     {
-        $user = new User;
-        $user->uid = $response->user->user_id;
-        $user->email = $response->user->email;
-
-        return $user;
+        return $response->user;
     }
 
     public function userUid($response, \League\OAuth2\Client\Token\AccessToken $token)

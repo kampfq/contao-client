@@ -16,60 +16,43 @@ class AuthorizationHelper extends System
      * Redirect the user to the oauth server
      *
      */
-    public function redirectAction($server)
+    public function redirectAction(SuperLoginServerModel $server)
     {
         $provider = $this->createOAuth2Provider($server);
         $provider->authorize();
     }
 
-    public function authorizationAction($serverId)
+    public function authorizationAction(SuperLoginServerModel $server, $code)
     {
-        $server = $this->get('superlogin.server_manager')->find($serverId);
-        $request = $this->get('request');
-        $state = $request->query->get('state');
-        $state_session = $this->get('session')->get('oauth2state');
-
-        // Server not found
-        if (!$server) {
-            throw new AccessDeniedHttpException('Unknown server');
-        }
-
-        // Init provider
-        $provider = $this->get('superlogin.server_manager')->createOAuth2Provider($server);
-
-        // Validate state
-        if (empty($state) || ($state !== $state_session)) {
-            $this->get('session')->remove('oauth2state');
-            throw new AccessDeniedHttpException('Invalid state');
-        }
+        $provider = $this->createOAuth2Provider($server);
 
         try {
 
-            // Get Access token
-            $accessToken = $provider->getAccessToken('authorization_code', [
-                'code' => $request->query->get('code')
-            ]);
+            // Try to get an access token (using the authorization code grant)
+            $t = $provider->getAccessToken('authorization_code', array('code' => $code));
 
-            // Get Resource Owner
-            $resourceOwner = $provider->getResourceOwner($accessToken);
-            $userDetails = $resourceOwner->toArray()['user'];
+            // We got an access token, let's now get the user's details
+            $userDetails = $provider->getUserDetails($t);
 
-            // Simulate Contao login
-            $contaoUser = $this->get('superlogin.remote_user')->create($userDetails);
-            $this->get('superlogin.remote_user')->createOrUpdate($contaoUser);
-            $this->get('superlogin.remote_user')->loginAs($contaoUser);
-
-            return $this->redirectToRoute('contao_backend');
-
-        } catch (IdentityProviderException $e) {
-            // Failed to get the access token or user details.
-            throw new AccessDeniedHttpException('an error occured');
+        } catch (Exception $e) {
+            throw new AccessDeniedHttpException('an error occurred');
         }
+
+        return $userDetails;
     }
 
     protected function createOAuth2Provider($server)
     {
-        $returnUrl = Environment::get('base') . Environment::get('requestUri') . '&return=1';
+        $base = substr(Environment::get('base'), 0, -1);
+        $requestUri = Environment::get('requestUri');
+
+        if (str_replace('&return=1', '', $requestUri) !== $requestUri) {
+            $urlParts = explode('&return=1', $requestUri);
+            $returnUrl = $base . $urlParts[0] . '&return=1';
+        }
+        else {
+            $returnUrl = $base . $requestUri . '&return=1';
+        }
 
         $provider = new OAuth2Provider(array(
             'authorizeUrl' => $server->url_authorize,

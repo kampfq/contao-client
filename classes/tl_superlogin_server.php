@@ -1,18 +1,16 @@
 <?php
 /**
- * @package   AuthClient
+ * @package   SuperLogin
  * @author    Hendrik Obermayer - Comolo GmbH
  * @license   -
  * @copyright 2015 Hendrik Obermayer
  */
 
-namespace Comolo\SuperLoginClient\ContaoEdition\Module;
-
-use Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel;
+namespace SuperLogin;
 
 /**
  * Class tl_superlogin_server
- * @package AuthClient
+ * @package SuperLogin
  */
 class tl_superlogin_server
 {

@@ -34,12 +34,10 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
     // Classes
-    'SuperLogin\ClcPlusAuthProvider' => 'system/modules/superlogin-client/classes/ClcPlusAuthProvider.php',
-    'SuperLogin\LoginAuth'       => 'system/modules/superlogin-client/classes/LoginAuth.php',
-    'SuperLogin\AuthProvider'    => 'system/modules/superlogin-client/classes/AuthProvider.php',
-    'SuperLogin\tl_authclient_server'    => 'system/modules/superlogin-client/classes/tl_authclient_server.php',
+    'SuperLogin\tl_superlogin_server'    => 'system/modules/superlogin-client/classes/tl_superlogin_server.php',
     'SuperLogin\DisplayAuthProviders'    => 'system/modules/superlogin-client/classes/DisplayAuthProviders.php',
     'SuperLogin\AuthorizationHelper'    => 'system/modules/superlogin-client/classes/AuthorizationHelper.php',
+    'SuperLogin\AuthorizationController'       => 'system/modules/superlogin-client/classes/AuthorizationController.php',
     'SuperLogin\OAuth2Provider'    => 'system/modules/superlogin-client/classes/OAuth2Provider.php',
 
     // Models

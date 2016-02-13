@@ -25,21 +25,10 @@ namespace SuperLogin;
  * @author     Hendrik Obermayer - Comolo GmbH
  * @package    Devtools
  */
-class LoginAuth extends \System
+class AuthorizationController extends \System
 {
     protected static $allowLogin = false;
     protected $serverId = null;
-
-    /**
-     * remember the last used login provider
-     */
-    protected function setPreferredLoginProvider()
-    {
-        if ($this->serverId) {
-            unset($_COOKIE['cto_preferred_login_provider']);
-            $this->setCookie('cto_preferred_login_provider', $this->serverId, time()+60*60*24*30);
-        }
-    }
 
     /**
      * check for a new request to redirect to the auth server
@@ -55,28 +44,18 @@ class LoginAuth extends \System
         \BackendUser::getInstance();
         \Database::getInstance();  
 
-        $this->serverId = $serverId = intval(\Input::get('superlogin', 0));
+        $serverId = intval(\Input::get('superlogin', 0));
 
         if ($serverId > 0) {
 
-            if ($server = SuperLoginServerModel::findById($serverId) == false) {
+            $server = SuperLoginServerModel::findById($serverId);
+
+            if ($server == false) {
                 return false;
             }
 
             $authorization = new AuthorizationHelper();
             $authorization->redirectAction($server);
-
-            die('YAY');
-
-            $class = $server->auth_provider;
-
-            $authProvider = new $class();
-            $authProvider->setAuthServerId($serverId);
-            $authProvider->setServerAddress($server->server_address);
-            $authProvider->setPublicId($server->public_id);
-            $authProvider->setPrivateKey($server->private_key);
-            $authProvider->setServerKey($server->server_key);
-            $authProvider->run();
 
             return true;
         }
@@ -96,37 +75,24 @@ class LoginAuth extends \System
         
         // Initialize BackendUser before Database
         \BackendUser::getInstance();
-        \Database::getInstance();  
+        \Database::getInstance();
 
-        $this->serverId = $serverId = intval(\Input::get('authid'));
+        $serverId = intval(\Input::get('superlogin', 0));
+        $return = intval(\Input::get('return', 0));
 
-        if ($serverId > 0) {
+
+        if ($serverId > 0 && $return == '1') {
 
             $server = SuperLoginServerModel::findById($serverId);
-            if(!$server) return false;
 
-            $class = $server->auth_provider;
-
-            $authProvider = new $class();
-            $authProvider->setAuthServerId($serverId);
-            $authProvider->setServerAddress($server->server_address);
-            $authProvider->setPublicId($server->public_id);
-            $authProvider->setPrivateKey($server->private_key);
-            $authProvider->setServerKey($server->server_key);
-
-            // Fix: temporarily disable request token
-            $tokenStatus = $GLOBALS['TL_CONFIG']['disableRefererCheck'];
-            $GLOBALS['TL_CONFIG']['disableRefererCheck'] = false;
-
-            // TODO: check for exception / display error
-            $response = $authProvider->checkResponse();
-
-            // reset request token status
-            $GLOBALS['TL_CONFIG']['disableRefererCheck'] = $tokenStatus;
-
-            if($response) {
-                $this->loginUser($response);
+            if ($server == false) {
+                return false;
             }
+
+            $authorization = new AuthorizationHelper();
+            $userDetails = $authorization->authorizationAction($server, \Input::get('code'));
+
+            $this->loginUser((array) $userDetails);
 
             return true;
         }
@@ -163,10 +129,15 @@ class LoginAuth extends \System
         }
 
         // Update general user data
-        $user->name = $userData['name'];
+        $user->name = $userData['fullname'];
         $user->email = $userData['email'];
-        $user->language = (isset($userData['language'])) ? $userData['language'] : null;
-        $user->admin = (isset($userData['admin']) && $userData['admin'] == "1") ? true : false;
+
+        $user->language = 'de';
+        $user->admin = true;
+
+            // Todo
+        //$user->language = (isset($userData['language'])) ? $userData['language'] : null;
+        //$user->admin = (isset($userData['admin']) && $userData['admin'] == "1") ? true : false;
 
         // Save user
         $user->save();
@@ -177,7 +148,6 @@ class LoginAuth extends \System
         $_POST['password'] = '#######';
         $_POST['REQUEST_TOKEN'] = REQUEST_TOKEN;
 
-        $this->setPreferredLoginProvider();
         $this->loginUserAction();
     }
 
