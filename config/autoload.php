@@ -41,5 +41,5 @@ ClassLoader::addClasses(array
     'SuperLogin\DisplayAuthProviders'    => 'system/modules/superlogin-client/classes/DisplayAuthProviders.php',
 
     // Models
-    'SuperLogin\AuthClientServerModel' => 'system/modules/superlogin-client/models/SuperLoginServerModel.php',
+    'SuperLogin\SuperLoginServerModel' => 'system/modules/superlogin-client/models/SuperLoginServerModel.php',
 ));
