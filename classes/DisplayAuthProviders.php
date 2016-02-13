@@ -15,10 +15,7 @@
 /**
  * Namespace
  */
-namespace Comolo\SuperLoginClient\ContaoEdition\Module;
-
-use Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel;
-
+namespace SuperLogin;
 
 /**
  * Class LoginAuth
@@ -49,7 +46,7 @@ class DisplayAuthProviders extends \System
             
             // Add CSS
             $searchString = '</head>';
-            $cssLink = '<link rel="stylesheet" href="/bundles/comolosuperloginclient/css/superlogin.css">';
+            $cssLink = '<link rel="stylesheet" href="/system/modules/superlogin-client/assets/css/superlogin.css">';
             $strContent = str_replace($searchString, $cssLink.$searchString, $strContent);
         }
 
