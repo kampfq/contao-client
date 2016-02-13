@@ -40,3 +40,8 @@ class SuperLoginServerModel extends \Model
     }
 
 }
+
+/*
+* Fix autoload bug
+*/
+class_alias('Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel', '\SuperLoginServerModel');
