@@ -42,39 +42,8 @@ class LoginAuth extends \System
     }
 
     /**
-     * Display option field in backend login
-     *
-     * @param $strContent
-     * @param $strTemplate
-     * @return mixed
-     */
-	public function addServersToLoginPage($strContent, $strTemplate)
-    {
-        if ($strTemplate == 'be_login')
-        {
-            $template = new \BackendTemplate('mod_authclient_serverlist');
-            $template->loginServers = \AuthClientServerModel::findAll();
-
-            // TODO: Check if certificate is still valid
-
-            // Preferred login provider
-            $preferredServer = intval(\Input::cookie('cto_preferred_login_provider'));
-            if ($preferredServer > 0) {
-                $template->preferredServer = $preferredServer;
-            }
-            else {
-                $template->preferredServer = false;
-            }
-
-            $searchString = '<table class="tl_login_table">';
-            $strContent = str_replace($searchString, $searchString . $template->parse(), $strContent);
-        }
-
-        return $strContent;
-    }
-
-    /**
      * check for a new request to redirect to the auth server
+     *
      * @return bool|void
      */
     public function listenForAuthRequest()
@@ -86,12 +55,18 @@ class LoginAuth extends \System
         \BackendUser::getInstance();
         \Database::getInstance();  
 
-        $this->serverId = $serverId = intval(\Input::post('auth_server'));
+        $this->serverId = $serverId = intval(\Input::get('superlogin', 0));
 
         if ($serverId > 0) {
 
-            $server = \AuthClientServerModel::findById($serverId);
-            if(!$server) return false;
+            if ($server = SuperLoginServerModel::findById($serverId) == false) {
+                return false;
+            }
+
+            $authorization = new AuthorizationHelper();
+            $authorization->redirectAction($server);
+
+            die('YAY');
 
             $class = $server->auth_provider;
 
@@ -127,7 +102,7 @@ class LoginAuth extends \System
 
         if ($serverId > 0) {
 
-            $server = \AuthClientServerModel::findById($serverId);
+            $server = SuperLoginServerModel::findById($serverId);
             if(!$server) return false;
 
             $class = $server->auth_provider;

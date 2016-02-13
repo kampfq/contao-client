@@ -11,7 +11,7 @@
         "role": "Developer"
     }],
     "require": {
-        "league/oauth2-client": "~0.3"
+        "league/oauth2-client": "0.3.0"
     },
     "autoload":{
         "psr-4": {

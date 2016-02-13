@@ -39,6 +39,8 @@ ClassLoader::addClasses(array
     'SuperLogin\AuthProvider'    => 'system/modules/superlogin-client/classes/AuthProvider.php',
     'SuperLogin\tl_authclient_server'    => 'system/modules/superlogin-client/classes/tl_authclient_server.php',
     'SuperLogin\DisplayAuthProviders'    => 'system/modules/superlogin-client/classes/DisplayAuthProviders.php',
+    'SuperLogin\AuthorizationHelper'    => 'system/modules/superlogin-client/classes/AuthorizationHelper.php',
+    'SuperLogin\OAuth2Provider'    => 'system/modules/superlogin-client/classes/OAuth2Provider.php',
 
     // Models
     'SuperLogin\SuperLoginServerModel' => 'system/modules/superlogin-client/models/SuperLoginServerModel.php',

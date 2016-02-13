@@ -32,11 +32,18 @@ class SuperLoginServerModel extends \Model
 	 * @var string
 	 */
 	protected static $strTable = 'tl_superlogin_server';
-    
+
+
     public function getRedirectUrl()
     {
-        return \System::getContainer()->get('router')
-                ->generate('superlogin_auth_redirect', array('serverId' => $this->id));
+        $base = \Environment::get('requestUri');
+        $delimiter = '&';
+
+        if (str_replace('?', '', $base) === $base) {
+            $delimiter = '?';
+        }
+
+        return $base . $delimiter . 'superlogin=' . $this->id;
     }
 
 }

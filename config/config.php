@@ -16,7 +16,6 @@ $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('DisplayAuthProviders', '
 $GLOBALS['TL_HOOKS']['checkCredentials'][] = array('LoginAuth', 'loginUserHookPassword');
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthResponse');
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = array('LoginAuth', 'listenForAuthRequest');
-$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('LoginAuth', 'addServersToLoginPage');
 
 
 $GLOBALS['BE_MOD']['superlogin']['superlogin_auth_servers'] = array(
