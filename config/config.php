@@ -12,7 +12,7 @@
  */
 
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array(
-    '\Comolo\SuperLoginClient\ContaoEdition\Module\DisplayAuthProviders',
+    'DisplayAuthProviders',
     'addServersToLoginPage'
 );
 
