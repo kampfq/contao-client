@@ -2,7 +2,7 @@
     "name":"superlogin/contao-client",
     "description":"SuperLogin Client for Contao 3",
     "keywords":["contao","login"],
-    "type":"symfony-bundle",
+    "type":"contao-module",
     "homepage":"http://www.comolo.de",
     "license":"proprietary",
     "authors":[{
@@ -11,14 +11,18 @@
         "role": "Developer"
     }],
     "require": {
-        "league/oauth2-client": "~1.1"
-    },
-    "conflict": {
-        "contao/core": "*"
+        "league/oauth2-client": "~0.3"
     },
     "autoload":{
         "psr-4": {
             "Comolo\\SuperLoginClient\\ContaoEdition\\": "src/"
+        }
+    },
+    "extra":{
+        "contao":{
+            "sources":{
+                "":"system/modules/superlogin-client"
+            }
         }
     }
 }

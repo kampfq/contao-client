@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2005-2014 Leo Feyer
  *
- * @package   AuthClient
+ * @package   SuperLogin
  * @author    Hendrik Obermayer - Comolo GmbH
  * @license   -
  * @copyright 2014 Hendrik Obermayer
@@ -15,8 +15,7 @@
 /**
  * Namespace
  */
-namespace Comolo\SuperLoginClient\ContaoEdition\Model;
-use  Comolo\SuperLoginClient\ContaoEdition\AuthProvider\OAuth2Provider;
+namespace SuperLogin;
 
 /**
  * Class AuthServerModel
@@ -41,8 +40,3 @@ class SuperLoginServerModel extends \Model
     }
 
 }
-
-/*
- * Fix autoload bug
- */
-class_alias('Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel', '\SuperLoginServerModel');

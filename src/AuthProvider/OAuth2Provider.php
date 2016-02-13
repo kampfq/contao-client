@@ -68,7 +68,7 @@ class OAuth2Provider extends AuthProvider
      * @throws \Exception could not get public id from server
      */
     protected function requestPublicId($serverUrl, $certificateHash, $domain, $websiteTitle) {
-
+        /*
         // add register to server url
         $serverUrl .= '/register';
 
@@ -102,5 +102,6 @@ class OAuth2Provider extends AuthProvider
         }
 
         throw new \Exception("Could not get public id! Error: " . htmlentities($result));
+        */
     }
 }
