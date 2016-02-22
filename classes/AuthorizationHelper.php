@@ -27,9 +27,9 @@ class AuthorizationHelper extends System
         $provider = $this->createOAuth2Provider($server);
 
         try {
-
-            // Try to get an access token (using the authorization code grant)
-            $t = $provider->getAccessToken('authorization_code', array('code' => $code));
+            
+            $t = $provider->getAccessToken('authorization_Code', array('code' => $code));
+            //$t = $provider->getAccessToken('authorization_code', array('code' => $code));
 
             // We got an access token, let's now get the user's details
             $userDetails = $provider->getUserDetails($t);
