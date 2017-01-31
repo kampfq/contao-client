@@ -17,6 +17,9 @@
  */
 namespace Comolo\SuperLoginClient\ContaoEdition\Module;
 
+use Environment;
+use System;
+use BackendTemplate;
 use Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel;
 
 
@@ -27,7 +30,7 @@ use Comolo\SuperLoginClient\ContaoEdition\Model\SuperLoginServerModel;
  * @author     Hendrik Obermayer - Comolo GmbH
  * @package    Devtools
  */
-class DisplayAuthProviders extends \System
+class DisplayAuthProviders extends System
 {
     /**
      * Display option field in backend login
@@ -40,7 +43,7 @@ class DisplayAuthProviders extends \System
     {
         if ($strTemplate == 'be_login')
         {
-            $template = new \BackendTemplate('mod_superlogin_loginpage');
+            $template = new BackendTemplate('mod_superlogin_loginpage');
             $template->loginServers = SuperLoginServerModel::findAll();
 
             // TODO: Check if server is enabled
