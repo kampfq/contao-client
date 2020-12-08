@@ -32,7 +32,7 @@ class RemoteContaoOAuth2User implements RemoteUserInterface
     protected function getFieldMap($field)
     {
         $mapping = [
-            'fullname' => 'name',
+            'full_name' => 'name',
             'username' => 'username',
             'email' => 'email',
             'language' => 'language',

@@ -1,5 +1,6 @@
 {
-    "name":"superlogin/contao-client",
+    "name":"kampfq/mailcow_sso",
+    "version": "1.0.0",
     "description":"SuperLogin Client for Contao 4",
     "keywords":["contao","login"],
     "type":"contao-module",

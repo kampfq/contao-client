@@ -71,7 +71,7 @@ class AuthorizationController extends Controller
 
             // Get Resource Owner
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            $userDetails = $resourceOwner->toArray()['user'];
+            $userDetails = $resourceOwner->toArray();
 
             // Simulate Contao login
             $contaoUser = $remoteUserManager->create($userDetails);
